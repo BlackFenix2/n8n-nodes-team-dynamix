@@ -1,0 +1,25 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Debug n8n dev (npm run dev)",
+			"request": "launch",
+			"type": "node",
+			"runtimeExecutable": "npm",
+			"runtimeArgs": ["run", "dev"],
+			"cwd": "${workspaceFolder}",
+			"console": "integratedTerminal",
+			"autoAttachChildProcesses": true,
+			"skipFiles": ["<node_internals>/**"]
+		},
+		{
+			"name": "Attach to running n8n",
+			"processId": "${command:PickProcess}",
+			"request": "attach",
+			"autoAttachChildProcesses": true,
+			"restart": true,
+			"skipFiles": ["<node_internals>/**"],
+			"type": "node"
+		}
+	]
+}
