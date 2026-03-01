@@ -1,12 +1,13 @@
 # GitHub Actions Setup for npm Publishing
 
-This document explains how to configure this repository to publish to npm using GitHub Actions with provenance.
+This document explains how to configure this repository to publish to npm using GitHub Actions with provenance and npm Trusted Publishing (OIDC).
 
 ## Prerequisites
 
 - GitHub repository admin access
 - npm account with publish permissions for `n8n-nodes-team-dynamix`
 - GitHub Actions enabled for the repository
+- npm Trusted Publishing configured for this repository (see Step 1)
 
 ## Workflow Used by This Repository
 
@@ -17,22 +18,23 @@ On successful completion of the `CI` workflow for `main` (and on manual workflow
 1. Installs dependencies (`npm ci`)
 2. Runs lint (`npm run lint`)
 3. Runs build (`npm run build`)
-4. Publishes with provenance (`npm publish --provenance --ignore-scripts`)
+4. Publishes with provenance via OIDC (`npm publish --provenance --ignore-scripts`)
 
-This ensures publish only runs after CI passes and publishes the exact commit CI validated.
+Authentication uses npm Trusted Publishing (OIDC) — no `NPM_TOKEN` secret is required.
 
-## Step 1: Configure npm Authentication
+## Step 1: Configure npm Trusted Publishing
 
-### Option A: Use `NPM_TOKEN` secret (simple)
+This repository uses npm Trusted Publishing (OIDC) for passwordless, token-free authentication.
 
-1. In npm, create an **automation** token (or a granular token with publish permissions).
-2. In GitHub, open **Settings → Secrets and variables → Actions**.
-3. Create repository secret: `NPM_TOKEN`.
-4. Paste the token value.
+1. Sign in to [npmjs.com](https://www.npmjs.com) and open the `n8n-nodes-team-dynamix` package settings.
+2. Under **Trusted Publishers**, click **Add a publisher**.
+3. Fill in:
+   - **Owner**: `BlackFenix2`
+   - **Repository**: `n8n-nodes-team-dynamix`
+   - **Workflow filename**: `publish.yml`
+4. Save.
 
-### Option B: Use npm Trusted Publishing (recommended)
-
-Set up npm trusted publishing for your GitHub repository/workflow so publishing can use OIDC without storing long-lived npm tokens.
+GitHub Actions will now exchange an OIDC token for a short-lived npm publish token automatically — no secrets to rotate.
 
 Reference: https://docs.npmjs.com/trusted-publishers
 
@@ -46,7 +48,7 @@ permissions:
   id-token: write
 ```
 
-`id-token: write` is required to generate provenance statements.
+`id-token: write` is required for the OIDC token exchange and to generate provenance statements.
 
 ## Step 3: Release a New Version
 
@@ -64,9 +66,9 @@ npm view n8n-nodes-team-dynamix version
 
 ### 403 / auth errors
 
-- Verify `NPM_TOKEN` exists and is valid
-- Confirm token has publish permissions for the package
-- If 2FA is enforced, prefer automation token or trusted publishing
+- Confirm npm Trusted Publishing is configured for this repo and the `publish.yml` workflow file name matches exactly.
+- Ensure the workflow has `id-token: write` permission.
+- Verify the package name in `package.json` matches the npm package name.
 
 ### Package already exists
 
