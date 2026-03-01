@@ -38,6 +38,14 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Show Node and npm versions
+        run: |
+          node -v
+          npm -v
+
+      - name: Show npm config (safe)
+        run: npm config list
+
       - name: Run lint
         run: npm run lint
 
@@ -45,4 +53,4 @@ jobs:
         run: npm run build
 
       - name: Publish to npm with provenance
-        run: npm publish --access public --provenance --ignore-scripts
+        run: npm publish --access public --provenance --ignore-scripts --loglevel verbose
