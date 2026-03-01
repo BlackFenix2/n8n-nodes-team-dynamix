@@ -129,7 +129,7 @@ npm run lint         # Check code quality
 
 ## Publishing Requirements
 
-**See [AZURE_DEVOPS_SETUP.md](./AZURE_DEVOPS_SETUP.md) for step-by-step Azure DevOps configuration instructions.**
+**This repository publishes through GitHub Actions with npm provenance.**
 
 ### 1. NPM Registry Publishing ✅
 
@@ -162,23 +162,18 @@ Provenance statements are cryptographic proofs that your package was built and p
 
 #### Current Environment
 
-**⚠️ NOTE:** This repository currently uses **Azure Pipelines** for CI/CD. However, the `azure-pipelines.yml` has been updated with npm publishing support.
+This repository uses GitHub Actions for npm publication.
 
-**For full n8n compliance (May 1st, 2026+), consider:**
+The publish workflow:
 
-- **Option 1 (Recommended):** Migrate to GitHub Actions
-  - Create `.github/workflows/publish.yml`
-  - Use `npm publish --provenance` (requires Node 19.6+)
-  - Set up OIDC token provider for GitHub Actions in npm
+- Runs on `main`/`master` pushes and manual dispatch
+- Runs `npm ci`, `npm run lint`, and `npm run build`
+- Publishes via `npm publish --provenance`
+- Uses `id-token: write` permissions for provenance support
 
-- **Option 2:** Continue with Azure Pipelines
-  - Azure Pipelines can provide OIDC tokens to npm
-  - Configure npm service connection with OIDC
-  - Update `azure-pipelines.yml` to use `npm publish --provenance`
+#### GitHub Actions Workflow
 
-#### GitHub Actions Example Workflow
-
-If migrating to GitHub Actions, create `.github/workflows/publish.yml`:
+The workflow file is `.github/workflows/publish.yml`:
 
 ```yaml
 name: Publish to npm
@@ -208,25 +203,12 @@ jobs:
       - run: npm run lint
       - run: npm run build
 
-      - run: npm publish --provenance
+      - run: npm publish --provenance --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
 
-#### Azure Pipelines with Provenance
-
-If continuing with Azure Pipelines:
-
-```yaml
-- script: |
-    npm publish --provenance
-  displayName: 'Publish to npm with provenance'
-  condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master')))
-  env:
-    NODE_AUTH_TOKEN: $(npm.token)
-```
-
-**Current status in this repo:** 🟡 PARTIAL - Azure Pipelines configured, but may need provenance flag
+**Current status in this repo:** ✅ COMPLIANT - GitHub Actions publish workflow with provenance is configured
 
 ---
 
@@ -245,7 +227,7 @@ Before submitting your node for n8n verification, ensure:
 - ✅ Follows UX guidelines
 - ✅ Has comprehensive README with usage examples
 - ✅ Published to npm registry
-- ✅ Uses GitHub Actions OR Azure Pipelines with provenance support
+- ✅ Uses GitHub Actions with provenance support
 
 ### Submission Process
 
@@ -268,7 +250,7 @@ Before submitting your node for n8n verification, ensure:
 4. **Submit your node for verification**
    - Provide package name: `n8n-nodes-team-dynamix`
    - npm URL: `https://www.npmjs.com/package/n8n-nodes-team-dynamix`
-   - Repository URL (Azure DevOps)
+  - Repository URL (GitHub)
 
 5. **Wait for n8n review**
    - n8n will verify technical and UX standards
@@ -345,13 +327,13 @@ The CI/CD pipeline will automatically publish the new version to npm.
 
 ## Resources
 
-- **Azure DevOps Setup:** [AZURE_DEVOPS_SETUP.md](./AZURE_DEVOPS_SETUP.md) - Step-by-step configuration for npm publishing
+- **GitHub Actions Setup:** [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md) - Step-by-step configuration for npm publishing
 - **N8N Docs:** https://docs.n8n.io/integrations/creating-nodes/
 - **Community Nodes Guide:** https://docs.n8n.io/integrations/community-nodes/
 - **N8N Creator Portal:** https://creators.n8n.io/nodes
 - **NPM Provenance:** https://docs.npmjs.com/generating-provenance-statements
 - **npm Tokens:** https://docs.npmjs.com/creating-and-viewing-authentication-tokens
-- **Azure DevOps Service Connections:** https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints
+- **npm Trusted Publishers:** https://docs.npmjs.com/trusted-publishers
 
 ---
 

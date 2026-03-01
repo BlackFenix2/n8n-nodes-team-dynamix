@@ -108,17 +108,31 @@ npm run build            # Build distribution
 
 ## Publishing
 
-This package is automatically published to npm on every push to the `main` or `master` branch via Azure Pipelines CI/CD.
+This package is automatically published to npm on every push to the `main` or `master` branch via GitHub Actions.
 
-**Setup required:** First-time setup needs Azure DevOps npm service connection configuration. See [AZURE_DEVOPS_SETUP.md](./AZURE_DEVOPS_SETUP.md) for complete step-by-step instructions.
+**Setup required:** Add repository secret `NPM_TOKEN` with publish access in your GitHub repository settings.
 
 **Important:** All n8n community nodes must follow [publishing requirements](./N8N_COMMUNITY_NODE_REQUIREMENTS.md#publishing-requirements), including:
 
 - ✅ Automatic linting and building on all commits
 - ✅ Publishing to npm registry with proper authentication
-- ⚠️ GitHub Actions with provenance statement requirement (May 1st, 2026+)
+- ✅ Publishing with GitHub Actions and provenance statement
 
 See [N8N_COMMUNITY_NODE_REQUIREMENTS.md](./N8N_COMMUNITY_NODE_REQUIREMENTS.md) for full publishing standards.
+
+## Required for n8n Submission
+
+Before submitting this package to the n8n Creator Portal, confirm:
+
+- ✅ Package name follows `n8n-nodes-*` convention
+- ✅ Includes `n8n-community-node-package` keyword
+- ✅ `package.json` includes valid `n8n` configuration
+- ✅ No runtime dependencies (devDependencies only)
+- ✅ `npm run lint` and `npm run build` both pass
+- ✅ Published to npm via GitHub Actions with provenance
+- ✅ README includes installation, credentials, and operations details
+
+Submission details: https://creators.n8n.io/nodes
 
 ## Resources
 

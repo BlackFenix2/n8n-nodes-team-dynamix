@@ -26,13 +26,13 @@ This guide helps collaborators, copilots, and other tools quickly find the docum
 - N8N submission process
 - Technical guidelines
 
-#### ...set up Azure DevOps for npm publishing
+#### ...set up GitHub Actions for npm publishing
 
-→ Follow [AZURE_DEVOPS_SETUP.md](./AZURE_DEVOPS_SETUP.md)
+→ Follow [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md)
 
 - Create npm token
-- Configure service connection
-- Verify pipeline configuration
+- Configure repository secret
+- Verify workflow configuration
 - Troubleshooting publishing issues
 
 #### ...understand what this package does
@@ -63,7 +63,7 @@ This guide helps collaborators, copilots, and other tools quickly find the docum
 | [README.md](./README.md)                                                   | Package overview & installation   | End users, new contributors      |
 | [CONTRIBUTING.md](./CONTRIBUTING.md)                                       | Development workflow & guidelines | Developers, collaborators        |
 | [N8N_COMMUNITY_NODE_REQUIREMENTS.md](./N8N_COMMUNITY_NODE_REQUIREMENTS.md) | N8N standards & requirements      | All contributors, other copilots |
-| [AZURE_DEVOPS_SETUP.md](./AZURE_DEVOPS_SETUP.md)                           | Azure DevOps npm publishing setup | Project leads, DevOps engineers  |
+| [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md)                       | GitHub Actions npm publishing setup | Project leads, maintainers      |
 | [PUBLISH_READINESS_CHECKLIST.md](./PUBLISH_READINESS_CHECKLIST.md)         | Pre-publish verification          | Release managers, before publish |
 | [CHANGELOG.md](./CHANGELOG.md)                                             | Release history & version notes   | Release managers                 |
 | [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)                                 | Community guidelines              | All community members            |
@@ -88,13 +88,13 @@ This guide helps collaborators, copilots, and other tools quickly find the docum
 
 1. Read: [N8N_COMMUNITY_NODE_REQUIREMENTS.md](./N8N_COMMUNITY_NODE_REQUIREMENTS.md) - **CRITICAL** for understanding this as an n8n community node
 2. Reference: [CONTRIBUTING.md](./CONTRIBUTING.md) - Code standards & development workflow
-3. Reference: [AZURE_DEVOPS_SETUP.md](./AZURE_DEVOPS_SETUP.md) - Publishing pipeline
+3. Reference: [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md) - Publishing pipeline
 
 ### 🚀 **DevOps / Project Lead**
 
-1. Read: [AZURE_DEVOPS_SETUP.md](./AZURE_DEVOPS_SETUP.md) (complete setup guide)
+1. Read: [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md) (complete setup guide)
 2. Reference: [N8N_COMMUNITY_NODE_REQUIREMENTS.md](./N8N_COMMUNITY_NODE_REQUIREMENTS.md#publishing-requirements) (standards)
-3. Configure: npm service connection in Azure DevOps
+3. Configure: GitHub repository npm credentials (secret or trusted publishing)
 
 ---
 
@@ -106,7 +106,7 @@ This repository is an **n8n community node package** with specific requirements:
 
 - ✅ Must follow [n8n standards](./N8N_COMMUNITY_NODE_REQUIREMENTS.md)
 - ✅ Must publish to npm with proper authentication
-- ⚠️ Must use [GitHub Actions OR Azure Pipelines with provenance](./N8N_COMMUNITY_NODE_REQUIREMENTS.md#github-actions-with-provenance-statement-%EF%B8%8F-critical) (May 1st, 2026+)
+- ✅ Must use [GitHub Actions with provenance](./N8N_COMMUNITY_NODE_REQUIREMENTS.md#2-github-actions-with-provenance-statement-%EF%B8%8F-critical)
 - ✅ Will be submitted to [N8N Creator Portal](https://creators.n8n.io/nodes) for verification
 
 ### Publishing Pipeline
@@ -114,7 +114,7 @@ This repository is an **n8n community node package** with specific requirements:
 ```
 Code pushed to main/master
         ↓
-Azure Pipeline auto-triggers
+GitHub Actions `Publish` workflow triggers
         ↓
 Lint + Build checks
         ↓
@@ -123,7 +123,7 @@ If successful → npm publish (automatic)
 Available on npm immediately
 ```
 
-**Setup required:** See [AZURE_DEVOPS_SETUP.md](./AZURE_DEVOPS_SETUP.md)
+**Setup required:** See [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md)
 
 ---
 
@@ -131,8 +131,8 @@ Available on npm immediately
 
 - **Current Date:** February 26, 2026
 - **Critical Deadline:** May 1st, 2026
-  - All n8n community nodes MUST publish using GitHub Actions OR Azure Pipelines with npm provenance
-  - See [N8N_COMMUNITY_NODE_REQUIREMENTS.md](./N8N_COMMUNITY_NODE_REQUIREMENTS.md#github-actions-with-provenance-statement-%EF%B8%8F-critical)
+        - All n8n community nodes MUST publish using GitHub Actions with npm provenance
+        - See [N8N_COMMUNITY_NODE_REQUIREMENTS.md](./N8N_COMMUNITY_NODE_REQUIREMENTS.md#2-github-actions-with-provenance-statement-%EF%B8%8F-critical)
 
 ---
 
@@ -155,18 +155,18 @@ Before first commit:
 **Q: Will copilots see this documentation?**
 A: Yes. This repo includes comprehensive documentation that any AI tool reading the codebase will find. Start with [README.md](./README.md) linking to other docs.
 
-**Q: What setup is needed in Azure DevOps?**
-A: Complete step-by-step guide in [AZURE_DEVOPS_SETUP.md](./AZURE_DEVOPS_SETUP.md). Key steps:
+**Q: What setup is needed in GitHub for publishing?**
+A: Complete step-by-step guide in [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md). Key steps:
 
 1. Create npm token
-2. Add Azure DevOps npm service connection
-3. Configure Azure Pipeline (already in place)
+2. Add `NPM_TOKEN` repository secret (or configure trusted publishing)
+3. Confirm `.github/workflows/publish.yml` is active
 
 **Q: Why all this documentation?**
 A: n8n community nodes have [strict standards](./N8N_COMMUNITY_NODE_REQUIREMENTS.md). This documentation ensures everyone understands the requirements and can publish correctly.
 
 **Q: When will this be published?**
-A: After setup completes in Azure DevOps, it publishes automatically on every push to `main`/`master`.
+A: After setup completes in GitHub, it publishes automatically on every push to `main`/`master`.
 
 ---
 
@@ -175,7 +175,7 @@ A: After setup completes in Azure DevOps, it publishes automatically on every pu
 For questions:
 
 - **Development:** See [CONTRIBUTING.md](./CONTRIBUTING.md#troubleshooting)
-- **Azure/Publishing:** See [AZURE_DEVOPS_SETUP.md](./AZURE_DEVOPS_SETUP.md#troubleshooting)
+- **Publishing:** See [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md#troubleshooting)
 - **N8N Standards:** See [N8N_COMMUNITY_NODE_REQUIREMENTS.md](./N8N_COMMUNITY_NODE_REQUIREMENTS.md)
 - **General:** See [README.md](./README.md#resources)
 

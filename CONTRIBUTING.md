@@ -140,7 +140,7 @@ Open a PR against the `develop` branch with:
 ├── package.json               # Package metadata & n8n config
 ├── tsconfig.json              # TypeScript configuration
 ├── eslint.config.mjs          # Linting configuration
-├── azure-pipelines.yml        # CI/CD pipeline
+├── .github/workflows/         # GitHub Actions workflows (CI + publish)
 ├── README.md                  # User documentation
 └── N8N_COMMUNITY_NODE_REQUIREMENTS.md  # Requirements (this file)
 ```
@@ -168,11 +168,11 @@ Open a PR against the `develop` branch with:
 
 **IMPORTANT:** This repository is configured to automatically publish to npm on push to `main` or `master` branch.
 
-**First-time setup:** See [AZURE_DEVOPS_SETUP.md](./AZURE_DEVOPS_SETUP.md) for Azure DevOps npm service connection configuration.
+**First-time setup:** See [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md) for GitHub Actions npm publishing configuration.
 
 ### What Happens on Push to Main
 
-1. Azure Pipelines CI runs:
+1. GitHub Actions publish workflow runs:
    - Installs dependencies
    - Runs linter
    - Builds the project
@@ -190,7 +190,7 @@ Ensure:
 - ✅ Version number updated in `package.json` (if making a release)
 - ✅ Changes documented in `README.md`
 - ✅ Changelog updated (if doing a formal release)
-- ✅ Azure DevOps npm service connection configured (see [AZURE_DEVOPS_SETUP.md](./AZURE_DEVOPS_SETUP.md))
+- ✅ GitHub Actions npm credentials configured (see [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md))
 
 ## Versioning
 
@@ -286,7 +286,7 @@ npm run lint        # Check for errors
 
 ### CI/CD pipeline failed
 
-- Check Azure Pipelines logs
+- Check GitHub Actions logs
 - Ensure your changes pass locally: `npm run lint && npm run build`
 - Push fixes to your branch - pipeline will retry automatically
 
