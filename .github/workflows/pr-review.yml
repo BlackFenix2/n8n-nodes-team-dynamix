@@ -4,6 +4,11 @@ on:
   pull_request:
     branches:
       - main
+    # Only run when merging develop into main
+    types:
+      - opened
+      - synchronize
+      - reopened
 
 permissions:
   contents: read
@@ -11,6 +16,7 @@ permissions:
 jobs:
   changelog-check:
     name: Changelog updated
+    if: github.head_ref == 'develop'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,6 +36,7 @@ jobs:
 
   version-bump-check:
     name: Package version bumped
+    if: github.head_ref == 'develop'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
