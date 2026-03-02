@@ -62,7 +62,7 @@ jobs:
           npm version patch -m "chore(release): %s [skip ci]"
 
       - name: Push version commit and tag
-        run: git push --follow-tags
+        run: git push origin HEAD:main --follow-tags
 
       - name: Publish to npm with provenance
         run: npm publish --access public --provenance --ignore-scripts --loglevel verbose
