@@ -16,8 +16,13 @@ jobs:
   publish:
     if: >-
       github.event_name == 'workflow_dispatch' ||
-      (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
+      (
+        github.event.workflow_run.conclusion == 'success' &&
+        github.event.workflow_run.event == 'push' &&
+        github.event.workflow_run.head_branch == 'main'
+      )
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     concurrency:
       group: npm-publish-main
       cancel-in-progress: false
@@ -43,12 +48,6 @@ jobs:
           node -v
           npm -v
 
-      - name: Show npm config (safe)
-        run: npm config list
-
-      - name: Run lint
-        run: npm run lint
-
       - name: Run build
         run: npm run build
 
@@ -65,6 +64,6 @@ jobs:
         run: git push origin HEAD:main --follow-tags
 
       - name: Publish to npm with provenance
-        run: npm publish --access public --provenance --ignore-scripts --loglevel verbose
+        run: npm run release
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -10,6 +10,13 @@ Use these instructions when prompting Copilot to generate or update code for thi
 - Credential file: `credentials/TeamDynamixApi.credentials.ts`
 - Node files: `nodes/TeamDynamix/*`
 
+## Branch and release flow
+
+- Active development happens on `develop`.
+- Feature branches should target `develop` first.
+- `main` is reserved for release-ready changes.
+- Merge `develop` into `main` to trigger npm publishing workflows.
+
 ## API source of truth
 
 - TeamDynamix API documentation: https://solutions.teamdynamix.com/TDWebApi/

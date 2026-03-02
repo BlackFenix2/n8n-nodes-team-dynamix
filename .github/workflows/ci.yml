@@ -4,11 +4,13 @@ on:
   pull_request:
   push:
     branches:
+      - develop
       - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v4
