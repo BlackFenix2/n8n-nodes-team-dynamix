@@ -10,7 +10,6 @@ on:
 
 permissions:
   contents: read
-  id-token: write
 
 jobs:
   publish:
@@ -44,5 +43,7 @@ jobs:
       - name: Run build
         run: npm run build
 
-      - name: Publish to npm with provenance
-        run: npm publish --access public --provenance --ignore-scripts
+      - name: Publish to npm
+        run: npm publish --access public --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
