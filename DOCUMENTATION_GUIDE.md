@@ -30,8 +30,8 @@ This guide helps collaborators, copilots, and other tools quickly find the docum
 
 → Follow [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md)
 
-- Create npm token
-- Configure repository secret
+- Configure npm Trusted Publisher (OIDC)
+- Configure npm Trusted Publisher (OIDC)
 - Verify workflow configuration
 - Troubleshooting publishing issues
 
@@ -94,7 +94,7 @@ This guide helps collaborators, copilots, and other tools quickly find the docum
 
 1. Read: [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md) (complete setup guide)
 2. Reference: [N8N_COMMUNITY_NODE_REQUIREMENTS.md](./N8N_COMMUNITY_NODE_REQUIREMENTS.md#publishing-requirements) (standards)
-3. Configure: GitHub repository npm credentials (secret or trusted publishing)
+3. Configure: npm Trusted Publisher for GitHub Actions OIDC
 
 ---
 
@@ -158,8 +158,8 @@ A: Yes. This repo includes comprehensive documentation that any AI tool reading 
 **Q: What setup is needed in GitHub for publishing?**
 A: Complete step-by-step guide in [GITHUB_ACTIONS_SETUP.md](./GITHUB_ACTIONS_SETUP.md). Key steps:
 
-1. Create npm token
-2. Add `NPM_TOKEN` repository secret (or configure trusted publishing)
+1. Configure npm Trusted Publisher for this repo/workflow
+2. Ensure no `NPM_TOKEN` / `NODE_AUTH_TOKEN` secrets are configured
 3. Confirm `.github/workflows/publish.yml` is active
 
 **Q: Why all this documentation?**

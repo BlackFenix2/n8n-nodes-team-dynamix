@@ -110,7 +110,7 @@ npm run build            # Build distribution
 
 This package is automatically published to npm on every push to the `main` or `master` branch via GitHub Actions.
 
-**Setup required:** Add repository secret `NPM_TOKEN` with publish access in your GitHub repository settings.
+**Setup required:** Configure npm Trusted Publisher (OIDC) for this repository and workflow.
 
 **Important:** All n8n community nodes must follow [publishing requirements](./N8N_COMMUNITY_NODE_REQUIREMENTS.md#publishing-requirements), including:
 

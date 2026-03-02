@@ -64,7 +64,7 @@
 
 ### Repository Configuration
 
-- [ ] Repository secret `NPM_TOKEN` is configured (or npm trusted publishing is configured)
+- [ ] npm Trusted Publisher is configured for this repository/workflow
 - [ ] Environment `npm` exists (if required by workflow)
 - [ ] Branch protections match your release policy
 
@@ -102,7 +102,7 @@ npm pack --dry-run
 ### Publish workflow failed
 
 - [ ] Check `CI` succeeded first
-- [ ] Check `NPM_TOKEN` permissions
+- [ ] Confirm no `NPM_TOKEN`/`NODE_AUTH_TOKEN` secrets are configured
 - [ ] Ensure version is not already published
 - [ ] Ensure publish job has required environment access
 

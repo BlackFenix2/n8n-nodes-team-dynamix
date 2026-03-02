@@ -204,9 +204,9 @@ jobs:
       - run: npm run build
 
       - run: npm publish --provenance --ignore-scripts
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 ```
+
+This workflow should authenticate through npm Trusted Publishing (OIDC), not long-lived npm token secrets.
 
 **Current status in this repo:** ✅ COMPLIANT - GitHub Actions publish workflow with provenance is configured
 
@@ -332,7 +332,6 @@ The CI/CD pipeline will automatically publish the new version to npm.
 - **Community Nodes Guide:** https://docs.n8n.io/integrations/community-nodes/
 - **N8N Creator Portal:** https://creators.n8n.io/nodes
 - **NPM Provenance:** https://docs.npmjs.com/generating-provenance-statements
-- **npm Tokens:** https://docs.npmjs.com/creating-and-viewing-authentication-tokens
 - **npm Trusted Publishers:** https://docs.npmjs.com/trusted-publishers
 
 ---
