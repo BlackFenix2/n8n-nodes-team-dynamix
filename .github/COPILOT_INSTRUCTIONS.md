@@ -17,6 +17,13 @@ Use these instructions when prompting Copilot to generate or update code for thi
 - `main` is reserved for release-ready changes.
 - Merge `develop` into `main` to trigger npm publishing workflows.
 
+## Merge safety rule (critical)
+
+- NEVER perform a direct merge from `develop` into `main`.
+- NEVER auto-merge `develop` into `main` as part of assistant-driven tasks.
+- If release changes are needed on `main`, create or request a PR for human review/approval instead of merging directly.
+- This rule exists to prevent repeated npm publishing workflow triggers.
+
 ## API source of truth
 
 - TeamDynamix API documentation: https://solutions.teamdynamix.com/TDWebApi/
