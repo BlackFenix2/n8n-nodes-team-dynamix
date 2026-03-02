@@ -34,6 +34,14 @@ npm run dev
 
 ## Development Workflow
 
+### Branch Strategy
+
+- `develop` is the integration branch for ongoing work.
+- Feature/fix/docs branches should target `develop`.
+- `main` is the release branch.
+- Merge `develop` into `main` only when ready to publish.
+- Publishing to npm is triggered from `main` via GitHub Actions.
+
 ### 1. Create a Feature Branch
 
 Always create a new branch for your work:
@@ -119,6 +127,8 @@ Open a PR against the `develop` branch with:
 - Description explaining what and why
 - Reference any related issues
 - List of testing performed
+
+When preparing a release, open a PR from `develop` into `main`.
 
 ### 7. Code Review
 
