@@ -1,0 +1,64 @@
+name: PR Review
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  changelog-check:
+    name: Changelog updated
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify CHANGELOG.md was modified
+        run: |
+          BASE="${{ github.event.pull_request.base.sha }}"
+          HEAD="${{ github.event.pull_request.head.sha }}"
+          if git diff --name-only "$BASE" "$HEAD" | grep -qx 'CHANGELOG.md'; then
+            echo "CHANGELOG.md has been updated. ✅"
+          else
+            echo "❌ CHANGELOG.md must be updated before merging to main."
+            exit 1
+          fi
+
+  version-bump-check:
+    name: Package version bumped
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Compare package versions
+        run: |
+          BASE_VERSION=$(git show "${{ github.event.pull_request.base.sha }}":package.json | python3 -c "import sys,json; print(json.load(sys.stdin)['version'])")
+          HEAD_VERSION=$(python3 -c "import json; print(json.load(open('package.json'))['version'])")
+
+          echo "Base version (main): $BASE_VERSION"
+          echo "PR version:          $HEAD_VERSION"
+
+          python3 - "$BASE_VERSION" "$HEAD_VERSION" <<'EOF'
+          import sys
+
+          def version_tuple(v):
+              # Strip pre-release/build metadata (e.g. 1.0.0-beta.1+build.2 → 1.0.0)
+              core = v.split('-')[0].split('+')[0]
+              return tuple(int(x) for x in core.split('.'))
+
+          base = version_tuple(sys.argv[1])
+          head = version_tuple(sys.argv[2])
+
+          if head > base:
+              print(f"✅ Version bumped from {sys.argv[1]} to {sys.argv[2]}")
+              sys.exit(0)
+          else:
+              print(f"❌ package.json version must be bumped by at least one patch. Found: {sys.argv[2]} (base: {sys.argv[1]})", file=sys.stderr)
+              sys.exit(1)
+          EOF
