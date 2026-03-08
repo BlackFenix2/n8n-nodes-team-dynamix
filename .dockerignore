@@ -1,9 +1,9 @@
 node_modules
-npm-debug.log
 dist
 .git
 .gitignore
-README.md
 .vscode
-.DS_Store
-*.log
+playwright-report
+test-results
+npm-debug.log*
+*.local

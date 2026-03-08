@@ -38,5 +38,25 @@ services:
           target: /app/tsconfig.json
     restart: unless-stopped
 
+  n8n-e2e:
+    image: n8nio/n8n:latest
+    container_name: n8n-nodes-team-dynamix-e2e
+    ports:
+      - '5678:5678'
+    environment:
+      - N8N_HOST=0.0.0.0
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=http
+      - N8N_BASIC_AUTH_ACTIVE=false
+      - N8N_CUSTOM_EXTENSIONS=/home/node/.n8n/custom
+      - N8N_DIAGNOSTICS_ENABLED=false
+      - GENERIC_TIMEZONE=UTC
+    volumes:
+      - ./dist:/home/node/.n8n/custom/node_modules/n8n-nodes-team-dynamix/dist
+      - ./package.json:/home/node/.n8n/custom/node_modules/n8n-nodes-team-dynamix/package.json:ro
+      - n8n_e2e_data:/home/node/.n8n
+    restart: unless-stopped
+
 volumes:
   n8n_data:
+  n8n_e2e_data:

@@ -189,7 +189,7 @@ export async function executeKbArticleOperation(
 		);
 	}
 
-	const kbArticlesBaseUrl = `${baseUrl}/knowledgebase/articles`;
+	const kbArticlesBaseUrl = `${baseUrl}/knowledgebase`;
 
 	if (operation === 'create') {
 		return executeCreate.call(this, itemIndex, kbArticlesBaseUrl);

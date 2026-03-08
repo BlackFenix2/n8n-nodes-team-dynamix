@@ -29,12 +29,20 @@
 		"lint": "n8n-node lint",
 		"lint:fix": "n8n-node lint --fix",
 		"prepublishOnly": "n8n-node prerelease",
-		"docker:build": "docker-compose build",
-		"docker:dev": "docker-compose run --service-ports --rm n8n-dev",
-		"docker:dev:attach": "docker-compose up",
-		"docker:dev:detached": "docker-compose up -d",
-		"docker:stop": "docker-compose down",
-		"docker:logs": "docker-compose logs -f"
+		"docker:build": "docker compose build",
+		"docker:dev": "docker compose run --service-ports --rm n8n-dev",
+		"docker:dev:attach": "docker compose up n8n-dev",
+		"docker:dev:detached": "docker compose up -d n8n-dev",
+		"docker:e2e": "docker compose up n8n-e2e",
+		"docker:e2e:detached": "docker compose up -d n8n-e2e",
+		"docker:e2e:stop": "docker compose stop n8n-e2e",
+		"docker:stop": "docker compose down",
+		"docker:logs": "docker compose logs -f",
+		"test:e2e": "npm run build && playwright test",
+		"test:e2e:ui": "playwright test --ui",
+		"test:e2e:headed": "playwright test --headed",
+		"test:e2e:debug": "playwright test --debug",
+		"test:install": "playwright install chromium"
 	},
 	"files": [
 		"dist"
@@ -51,9 +59,11 @@
 	},
 	"devDependencies": {
 		"@n8n/node-cli": "*",
+		"@playwright/test": "^1.58.2",
 		"concurrently": "^9.2.1",
 		"cross-env": "^7.0.3",
 		"eslint": "9.32.0",
+		"playwright": "^1.58.2",
 		"prettier": "3.6.2",
 		"typescript": "5.9.2"
 	},
