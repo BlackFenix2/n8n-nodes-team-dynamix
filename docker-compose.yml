@@ -1,0 +1,42 @@
+services:
+  n8n-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: n8n-nodes-team-dynamix-dev
+    tty: true
+    stdin_open: true
+    ports:
+      - '5678:5678'
+    volumes:
+      # Mount source code for hot reload
+      - ./nodes:/app/nodes
+      - ./credentials:/app/credentials
+      - ./dist:/app/dist
+      # Persist n8n data
+      - n8n_data:/root/.n8n
+    environment:
+      - NODE_ENV=development
+      - N8N_LOG_LEVEL=info
+      - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_INTERVAL=500
+      - TSC_WATCHFILE=UsePolling
+      - TSC_WATCHDIRECTORY=UsePolling
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./nodes
+          target: /app/nodes
+        - action: sync+restart
+          path: ./credentials
+          target: /app/credentials
+        - action: sync+restart
+          path: ./package.json
+          target: /app/package.json
+        - action: sync+restart
+          path: ./tsconfig.json
+          target: /app/tsconfig.json
+    restart: unless-stopped
+
+volumes:
+  n8n_data:

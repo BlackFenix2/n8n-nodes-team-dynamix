@@ -8,6 +8,10 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
+function restorePipeCharacters(value: string): string {
+	return value.replace(/\\n|\/n|\r?\n/g, '|');
+}
+
 export class TeamDynamixApi implements ICredentialType {
 	name = 'teamDynamixApi';
 	displayName = 'TeamDynamix API';
@@ -103,7 +107,7 @@ export class TeamDynamixApi implements ICredentialType {
 			};
 		} else {
 			const username = String(credentials.username ?? '').trim();
-			const password = String(credentials.password ?? '');
+			const password = restorePipeCharacters(String(credentials.password ?? ''));
 
 			if (!username || !password) {
 				throw new Error('TeamDynamix user auth requires both Username and Password.');

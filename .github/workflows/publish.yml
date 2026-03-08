@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   id-token: write
 
 jobs:
@@ -50,11 +50,6 @@ jobs:
 
       - name: Run build
         run: npm run build
-
-      - name: Configure git user
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Publish to npm with provenance
         run: npm publish --access public --provenance --ignore-scripts --loglevel verbose

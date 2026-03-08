@@ -63,11 +63,37 @@ async function executeGetAll(
 	itemIndex: number,
 	kbArticlesBaseUrl: string,
 ): Promise<INodeExecutionData[]> {
-	const response = await this.helpers.httpRequestWithAuthentication.call(this, 'teamDynamixApi', {
-		method: 'GET',
-		url: kbArticlesBaseUrl,
-		json: true,
-	});
+	const kbSearchMode = this.getNodeParameter('kbSearchMode', itemIndex, 'fields') as string;
+	let response: IDataObject | IDataObject[];
+
+	if (kbSearchMode === 'json') {
+		const kbSearchDataRaw = this.getNodeParameter('kbSearchData', itemIndex) as
+			| IDataObject
+			| string;
+		const body = parseJsonObject.call(this, kbSearchDataRaw, 'KB Search Data', itemIndex);
+		response = (await this.helpers.httpRequestWithAuthentication.call(this, 'teamDynamixApi', {
+			method: 'POST',
+			url: `${kbArticlesBaseUrl}/search`,
+			body,
+			json: true,
+		})) as IDataObject | IDataObject[];
+	} else {
+		const body = this.getNodeParameter('kbSearch', itemIndex, {}) as IDataObject;
+		if (Object.keys(body).length === 0) {
+			response = (await this.helpers.httpRequestWithAuthentication.call(this, 'teamDynamixApi', {
+				method: 'GET',
+				url: kbArticlesBaseUrl,
+				json: true,
+			})) as IDataObject | IDataObject[];
+		} else {
+			response = (await this.helpers.httpRequestWithAuthentication.call(this, 'teamDynamixApi', {
+				method: 'POST',
+				url: `${kbArticlesBaseUrl}/search`,
+				body,
+				json: true,
+			})) as IDataObject | IDataObject[];
+		}
+	}
 
 	const kbArticles = Array.isArray(response) ? response : [response];
 	return kbArticles.map((article) => ({

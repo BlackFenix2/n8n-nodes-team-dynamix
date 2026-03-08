@@ -89,8 +89,16 @@ async function executeGetAll(
 	itemIndex: number,
 	ticketsBaseUrl: string,
 ): Promise<INodeExecutionData[]> {
-	const searchDataRaw = this.getNodeParameter('searchData', itemIndex) as IDataObject | string;
-	const body = parseJsonObject.call(this, searchDataRaw, 'Search Data', itemIndex);
+	const searchMode = this.getNodeParameter('searchMode', itemIndex, 'json') as string;
+	let body: IDataObject;
+
+	if (searchMode === 'json') {
+		const searchDataRaw = this.getNodeParameter('searchData', itemIndex) as IDataObject | string;
+		body = parseJsonObject.call(this, searchDataRaw, 'Search Data', itemIndex);
+	} else {
+		body = this.getNodeParameter('search', itemIndex, {}) as IDataObject;
+	}
+
 	const response = await this.helpers.httpRequestWithAuthentication.call(this, 'teamDynamixApi', {
 		method: 'POST',
 		url: `${ticketsBaseUrl}/search`,
