@@ -7,3 +7,5 @@ test-results/
 playwright-report/
 playwright/.cache/
 tests/e2e/screenshots/
+.env.local
+tests/e2e/.auth/

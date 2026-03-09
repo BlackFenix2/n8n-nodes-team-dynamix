@@ -158,7 +158,7 @@ export class TeamDynamix implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['ticket'],
-						operation: ['create', 'getAll', 'update', 'delete', 'addFeed'],
+						operation: ['create', 'getAll', 'get', 'update', 'delete', 'addFeed'],
 					},
 				},
 			},
@@ -172,8 +172,45 @@ export class TeamDynamix implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['ticket'],
-						operation: ['create', 'getAll', 'update', 'delete', 'addFeed'],
+						operation: ['create', 'getAll', 'get', 'update', 'delete', 'addFeed'],
 						appIdSource: ['node'],
+					},
+				},
+			},
+			{
+				displayName: 'App ID Source',
+				name: 'kbAppIdSource',
+				type: 'options',
+				default: 'node',
+				options: [
+					{
+						name: 'Credential Default',
+						value: 'credential',
+					},
+					{
+						name: 'Node Parameter',
+						value: 'node',
+					},
+				],
+				displayOptions: {
+					show: {
+						resource: ['kbArticle'],
+						operation: ['create', 'getAll', 'get', 'update', 'delete'],
+					},
+				},
+			},
+			{
+				displayName: 'App ID',
+				name: 'kbAppId',
+				type: 'number',
+				default: 0,
+				required: true,
+				description: 'TeamDynamix KB application ID',
+				displayOptions: {
+					show: {
+						resource: ['kbArticle'],
+						operation: ['create', 'getAll', 'get', 'update', 'delete'],
+						kbAppIdSource: ['node'],
 					},
 				},
 			},
@@ -575,7 +612,28 @@ export class TeamDynamix implements INodeType {
 				const resource = this.getNodeParameter('resource', itemIndex) as string;
 
 				if (resource === 'kbArticle') {
-					const operationData = await executeKbArticleOperation.call(this, itemIndex, baseUrl);
+					const kbAppIdSource = this.getNodeParameter('kbAppIdSource', itemIndex) as string;
+					let kbAppId: number;
+
+					if (kbAppIdSource === 'credential') {
+						kbAppId = credentialDefaultAppId;
+						if (!kbAppId || kbAppId <= 0) {
+							throw new NodeOperationError(
+								this.getNode(),
+								'Credential Default App ID must be greater than 0 when App ID Source is Credential Default',
+								{ itemIndex },
+							);
+						}
+					} else {
+						kbAppId = this.getNodeParameter('kbAppId', itemIndex) as number;
+						if (!kbAppId || kbAppId <= 0) {
+							throw new NodeOperationError(this.getNode(), 'KB App ID must be greater than 0', {
+								itemIndex,
+							});
+						}
+					}
+
+					const operationData = await executeKbArticleOperation.call(this, itemIndex, baseUrl, kbAppId);
 					returnData.push(...operationData);
 					continue;
 				}

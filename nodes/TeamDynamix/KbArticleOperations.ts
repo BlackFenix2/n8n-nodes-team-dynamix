@@ -175,6 +175,7 @@ export async function executeKbArticleOperation(
 	this: IExecuteFunctions,
 	itemIndex: number,
 	baseUrl: string,
+	appId: number,
 ): Promise<INodeExecutionData[]> {
 	const resource = this.getNodeParameter('resource', itemIndex) as string;
 	const operation = this.getNodeParameter('operation', itemIndex) as string;
@@ -189,7 +190,7 @@ export async function executeKbArticleOperation(
 		);
 	}
 
-	const kbArticlesBaseUrl = `${baseUrl}/knowledgebase`;
+	const kbArticlesBaseUrl = `${baseUrl}/${appId}/knowledgebase`;
 
 	if (operation === 'create') {
 		return executeCreate.call(this, itemIndex, kbArticlesBaseUrl);

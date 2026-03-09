@@ -35,14 +35,16 @@
 		"docker:dev:detached": "docker compose up -d n8n-dev",
 		"docker:e2e": "docker compose up n8n-e2e",
 		"docker:e2e:detached": "docker compose up -d n8n-e2e",
-		"docker:e2e:stop": "docker compose stop n8n-e2e",
-		"docker:stop": "docker compose down",
+		"docker:e2e:stop": "docker compose down n8n-e2e -v",
+		"docker:e2e:fresh:ui": "docker compose down -v --remove-orphans && docker compose up -d --build --force-recreate n8n-e2e && playwright test --ui",
+		"docker:down": "docker compose down",
 		"docker:logs": "docker compose logs -f",
 		"test:e2e": "npm run build && playwright test",
 		"test:e2e:ui": "playwright test --ui",
 		"test:e2e:headed": "playwright test --headed",
 		"test:e2e:debug": "playwright test --debug",
-		"test:install": "playwright install chromium"
+		"test:install": "playwright install chromium",
+		"test:codegen": "playwright codegen --target=javascript http://localhost:5679"
 	},
 	"files": [
 		"dist"
@@ -62,6 +64,7 @@
 		"@playwright/test": "^1.58.2",
 		"concurrently": "^9.2.1",
 		"cross-env": "^7.0.3",
+		"dotenv": "^16.6.1",
 		"eslint": "9.32.0",
 		"playwright": "^1.58.2",
 		"prettier": "3.6.2",

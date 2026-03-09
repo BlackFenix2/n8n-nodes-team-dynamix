@@ -3,5 +3,7 @@
 		"dbaeumer.vscode-eslint",
 		"EditorConfig.EditorConfig",
 		"esbenp.prettier-vscode",
+		"ms-playwright.playwright",
+		"ms-azuretools.vscode-containers"
 	]
 }
