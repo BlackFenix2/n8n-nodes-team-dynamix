@@ -23,7 +23,7 @@ Please read [N8N_COMMUNITY_NODE_REQUIREMENTS.md](./N8N_COMMUNITY_NODE_REQUIREMEN
 ```bash
 # Clone the repository
 git clone <repo-url>
-cd N8N-custom-auth-TDX
+cd n8n-nodes-team-dynamix
 
 # Install dependencies
 npm install
@@ -266,8 +266,6 @@ npm run lint            # Check code quality
 npm run lint:fix        # Auto-fix linting issues
 npm run build           # Build distribution
 
-# Release (manual only)
-npm run release         # Create release (commits, tags, publishes)
 ```
 
 ## Troubleshooting

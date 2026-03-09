@@ -158,7 +158,7 @@ export class TeamDynamix implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['ticket'],
-						operation: ['create', 'getAll', 'update', 'delete', 'addFeed'],
+						operation: ['create', 'getAll', 'get', 'update', 'delete', 'addFeed'],
 					},
 				},
 			},
@@ -172,8 +172,45 @@ export class TeamDynamix implements INodeType {
 				displayOptions: {
 					show: {
 						resource: ['ticket'],
-						operation: ['create', 'getAll', 'update', 'delete', 'addFeed'],
+						operation: ['create', 'getAll', 'get', 'update', 'delete', 'addFeed'],
 						appIdSource: ['node'],
+					},
+				},
+			},
+			{
+				displayName: 'App ID Source',
+				name: 'kbAppIdSource',
+				type: 'options',
+				default: 'node',
+				options: [
+					{
+						name: 'Credential Default',
+						value: 'credential',
+					},
+					{
+						name: 'Node Parameter',
+						value: 'node',
+					},
+				],
+				displayOptions: {
+					show: {
+						resource: ['kbArticle'],
+						operation: ['create', 'getAll', 'get', 'update', 'delete'],
+					},
+				},
+			},
+			{
+				displayName: 'App ID',
+				name: 'kbAppId',
+				type: 'number',
+				default: 0,
+				required: true,
+				description: 'TeamDynamix KB application ID',
+				displayOptions: {
+					show: {
+						resource: ['kbArticle'],
+						operation: ['create', 'getAll', 'get', 'update', 'delete'],
+						kbAppIdSource: ['node'],
 					},
 				},
 			},
@@ -283,6 +320,93 @@ export class TeamDynamix implements INodeType {
 				},
 			},
 			{
+				displayName: 'Search Mode',
+				name: 'searchMode',
+				type: 'options',
+				default: 'json',
+				displayOptions: {
+					show: {
+						resource: ['ticket'],
+						operation: ['getAll'],
+					},
+				},
+				options: [
+					{
+						name: 'Guided Fields',
+						value: 'fields',
+					},
+					{
+						name: 'Raw JSON',
+						value: 'json',
+					},
+				],
+			},
+			{
+				displayName: 'Search',
+				name: 'search',
+				type: 'collection',
+				default: {},
+				description: 'Guided TicketSearch fields',
+				displayOptions: {
+					show: {
+						resource: ['ticket'],
+						operation: ['getAll'],
+						searchMode: ['fields'],
+					},
+				},
+				options: [
+					{
+						displayName: 'Created Date From',
+						name: 'CreatedDateFrom',
+						type: 'string',
+						default: '',
+						description: 'Minimum created date/time (ISO 8601)',
+					},
+					{
+						displayName: 'Created Date To',
+						name: 'CreatedDateTo',
+						type: 'string',
+						default: '',
+						description: 'Maximum created date/time (ISO 8601)',
+					},
+					{
+						displayName: 'Max Results',
+						name: 'MaxResults',
+						type: 'number',
+						default: 50,
+						description: 'Maximum number of tickets to return',
+					},
+					{
+						displayName: 'Priority IDs',
+						name: 'PriorityIDs',
+						type: 'json',
+						default: '[]',
+						description: 'Number[] of priority IDs',
+					},
+					{
+						displayName: 'Requestor UIDs',
+						name: 'RequestorUids',
+						type: 'json',
+						default: '[]',
+						description: 'String[] of requestor GUIDs',
+					},
+					{
+						displayName: 'Search Text',
+						name: 'SearchText',
+						type: 'string',
+						default: '',
+						description: 'Text query for ticket search',
+					},
+					{
+						displayName: 'Status IDs',
+						name: 'StatusIDs',
+						type: 'json',
+						default: '[]',
+						description: 'Number[] of status IDs',
+					},
+				],
+			},
+			{
 				displayName: 'Search Data',
 				name: 'searchData',
 				type: 'json',
@@ -292,6 +416,7 @@ export class TeamDynamix implements INodeType {
 					show: {
 						resource: ['ticket'],
 						operation: ['getAll'],
+						searchMode: ['json'],
 					},
 				},
 			},
@@ -331,6 +456,117 @@ export class TeamDynamix implements INodeType {
 					show: {
 						resource: ['ticket'],
 						operation: ['addFeed'],
+					},
+				},
+			},
+			{
+				displayName: 'KB Search Mode',
+				name: 'kbSearchMode',
+				type: 'options',
+				default: 'fields',
+				displayOptions: {
+					show: {
+						resource: ['kbArticle'],
+						operation: ['getAll'],
+					},
+				},
+				options: [
+					{
+						name: 'Guided Fields',
+						value: 'fields',
+					},
+					{
+						name: 'Raw JSON',
+						value: 'json',
+					},
+				],
+			},
+			{
+				displayName: 'KB Search',
+				name: 'kbSearch',
+				type: 'collection',
+				default: {},
+				description: 'Guided Knowledge Base search fields',
+				displayOptions: {
+					show: {
+						resource: ['kbArticle'],
+						operation: ['getAll'],
+						kbSearchMode: ['fields'],
+					},
+				},
+				options: [
+					{
+						displayName: 'Author UID',
+						name: 'AuthorUID',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Category ID',
+						name: 'CategoryID',
+						type: 'number',
+						default: 0,
+					},
+					{
+						displayName: 'Include Article Bodies',
+						name: 'IncludeArticleBodies',
+						type: 'boolean',
+						default: false,
+						description: 'Whether article bodies are included',
+					},
+					{
+						displayName: 'Include Shortcuts',
+						name: 'IncludeShortcuts',
+						type: 'boolean',
+						default: false,
+						description: 'Whether shortcut articles are included',
+					},
+					{
+						displayName: 'Is Public',
+						name: 'IsPublic',
+						type: 'boolean',
+						default: false,
+						description: 'Whether articles are public',
+					},
+					{
+						displayName: 'Is Published',
+						name: 'IsPublished',
+						type: 'boolean',
+						default: false,
+						description: 'Whether articles are published',
+					},
+					{
+						displayName: 'Return Count',
+						name: 'ReturnCount',
+						type: 'number',
+						default: 50,
+					},
+					{
+						displayName: 'Search Text',
+						name: 'SearchText',
+						type: 'string',
+						default: '',
+					},
+					{
+						displayName: 'Status',
+						name: 'Status',
+						type: 'number',
+						default: 0,
+						description: 'ArticleStatus enum value',
+					},
+				],
+			},
+			{
+				displayName: 'KB Search Data',
+				name: 'kbSearchData',
+				type: 'json',
+				default: '{\n  "ReturnCount": 50\n}',
+				description: 'Knowledge Base search request body',
+				displayOptions: {
+					show: {
+						resource: ['kbArticle'],
+						operation: ['getAll'],
+						kbSearchMode: ['json'],
 					},
 				},
 			},
@@ -376,7 +612,33 @@ export class TeamDynamix implements INodeType {
 				const resource = this.getNodeParameter('resource', itemIndex) as string;
 
 				if (resource === 'kbArticle') {
-					const operationData = await executeKbArticleOperation.call(this, itemIndex, baseUrl);
+					const kbAppIdSource = this.getNodeParameter('kbAppIdSource', itemIndex) as string;
+					let kbAppId: number;
+
+					if (kbAppIdSource === 'credential') {
+						kbAppId = credentialDefaultAppId;
+						if (!kbAppId || kbAppId <= 0) {
+							throw new NodeOperationError(
+								this.getNode(),
+								'Credential Default App ID must be greater than 0 when App ID Source is Credential Default',
+								{ itemIndex },
+							);
+						}
+					} else {
+						kbAppId = this.getNodeParameter('kbAppId', itemIndex) as number;
+						if (!kbAppId || kbAppId <= 0) {
+							throw new NodeOperationError(this.getNode(), 'KB App ID must be greater than 0', {
+								itemIndex,
+							});
+						}
+					}
+
+					const operationData = await executeKbArticleOperation.call(
+						this,
+						itemIndex,
+						baseUrl,
+						kbAppId,
+					);
 					returnData.push(...operationData);
 					continue;
 				}

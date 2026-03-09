@@ -16,7 +16,8 @@ For developers and collaborators: This repository follows n8n community node sta
   - Delete tickets
   - Add feed entries to tickets
 - **Knowledge Base Operations:** KB article access
-- **Automatic Publishing:** CI/CD pipeline automatically publishes updates to npm
+- **Automatic Publishing:** CI/CD pipeline publishes to npm after `main` updates
+- **Manual Versioning Control:** `package.json` version is intentionally managed by maintainers via `develop` -> `main` PRs
 
 ## Installation
 
@@ -54,6 +55,32 @@ npm run lint:fix
 npm run build
 ```
 
+### Docker Development
+
+Run the development environment in Docker:
+
+```bash
+# Build and start the container
+npm run docker:dev
+
+# Or run in detached mode (background)
+npm run docker:dev:detached
+
+# View logs
+npm run docker:logs
+
+# Stop the container
+npm run docker:stop
+```
+
+The n8n instance will be available at: `http://localhost:5678`
+
+Docker setup includes:
+
+- Automatic hot-reload for code changes
+- Persistent n8n data volume
+- Debug logging enabled
+
 ## Credentials
 
 Credential type: `TeamDynamix API` (`teamDynamixApi`)
@@ -74,14 +101,30 @@ Resource: `Ticket`
   - Mode: Guided Fields or Raw JSON
   - Endpoint: `POST /tickets`
 - **Get Many**
-  - Endpoint: `GET /tickets`
-  - Optional query params: `statusId`, `page`, `maxResults`
+  - Endpoint: `POST /tickets/search`
+  - Uses `Search Data` JSON body to refine results
 - **Update**
   - Endpoint: `PUT /tickets/{ticketId}`
 - **Delete**
   - Endpoint: `DELETE /tickets/{ticketId}`
 - **Add Feed**
   - Endpoint: `POST /tickets/{ticketId}/feed`
+
+Resource: `KB Article`
+
+- **Get Many**
+  - Endpoint: `POST /knowledgebase/articles/search`
+  - Uses `KB Search Data` JSON body to refine results
+
+Example `KB Search Data` payload:
+
+```json
+{
+	"StatusIDs": [],
+	"SearchText": "onboarding",
+	"MaxResults": 25
+}
+```
 
 All requests are made against your configured credential `baseUrl`.
 
@@ -108,7 +151,9 @@ npm run build            # Build distribution
 
 ## Publishing
 
-This package is automatically published to npm on every push to the `main` or `master` branch via GitHub Actions.
+This package is automatically published to npm on pushes to `main` via GitHub Actions.
+
+Version numbers are **not** auto-bumped by workflows. Maintainers must manually update `package.json` before merge, and PR checks enforce that the version is increased for `develop` -> `main` pull requests.
 
 **Setup required:** Configure npm Trusted Publisher (OIDC) for this repository and workflow.
 
