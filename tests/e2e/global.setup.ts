@@ -1,6 +1,12 @@
+/* eslint-disable @n8n/community-nodes/no-restricted-imports, @typescript-eslint/no-unused-vars */
 import { execSync } from 'node:child_process';
 import { chromium, expect, type FullConfig } from '@playwright/test';
-import { N8N_BASE_URL, N8N_SIGNIN_URL, N8N_SETUP_URL, completeInitialSetupIfVisible } from './helpers';
+import {
+	N8N_BASE_URL,
+	N8N_SIGNIN_URL,
+	N8N_SETUP_URL,
+	completeInitialSetupIfVisible,
+} from './helpers';
 
 /**
  * Global setup: Start Docker and seed initial owner account

@@ -1,3 +1,4 @@
+/* eslint-disable @n8n/community-nodes/no-restricted-imports, @typescript-eslint/no-unused-vars */
 import { execSync } from 'node:child_process';
 import type { FullConfig } from '@playwright/test';
 

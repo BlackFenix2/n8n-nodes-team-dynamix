@@ -1,3 +1,4 @@
+/* eslint-disable @n8n/community-nodes/no-restricted-imports */
 import { test, expect } from '@playwright/test';
 
 test.describe('n8n - Smoke Tests', () => {

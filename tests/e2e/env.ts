@@ -1,3 +1,4 @@
+/* eslint-disable @n8n/community-nodes/no-restricted-imports, @n8n/community-nodes/no-restricted-globals */
 import dotenv from 'dotenv';
 
 dotenv.config({ path: '.env.local' });

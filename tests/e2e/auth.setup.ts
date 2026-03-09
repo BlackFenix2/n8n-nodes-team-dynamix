@@ -1,3 +1,4 @@
+/* eslint-disable @n8n/community-nodes/no-restricted-imports, @typescript-eslint/no-unused-vars */
 import { mkdirSync } from 'node:fs';
 import { chromium, test as setup } from '@playwright/test';
 import { e2eEnv } from './env';

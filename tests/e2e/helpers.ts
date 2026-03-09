@@ -1,3 +1,4 @@
+/* eslint-disable @n8n/community-nodes/no-restricted-imports, @n8n/community-nodes/no-restricted-globals */
 import { Page, expect } from '@playwright/test';
 import { e2eEnv } from './env';
 
