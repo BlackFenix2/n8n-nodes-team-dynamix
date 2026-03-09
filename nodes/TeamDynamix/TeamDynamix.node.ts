@@ -633,7 +633,12 @@ export class TeamDynamix implements INodeType {
 						}
 					}
 
-					const operationData = await executeKbArticleOperation.call(this, itemIndex, baseUrl, kbAppId);
+					const operationData = await executeKbArticleOperation.call(
+						this,
+						itemIndex,
+						baseUrl,
+						kbAppId,
+					);
 					returnData.push(...operationData);
 					continue;
 				}
