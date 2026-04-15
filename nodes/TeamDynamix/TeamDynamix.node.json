@@ -1,0 +1,18 @@
+{
+	"node": "n8n-nodes-team-dynamix.teamDynamix",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Productivity"],
+	"resources": {
+		"primaryDocumentation": [
+			{
+				"url": "https://github.com/BlackFenix2/n8n-nodes-team-dynamix"
+			}
+		],
+		"credentialDocumentation": [
+			{
+				"url": "https://solutions.teamdynamix.com/TDWebApi/"
+			}
+		]
+	}
+}

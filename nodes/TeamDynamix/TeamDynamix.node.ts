@@ -3,6 +3,7 @@ import {
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
+	NodeConnectionTypes,
 	NodeOperationError,
 } from 'n8n-workflow';
 import { executeKbArticleOperation } from './KbArticleOperations';
@@ -15,13 +16,14 @@ export class TeamDynamix implements INodeType {
 		icon: 'file:TeamDynamix.svg',
 		group: ['transform'],
 		version: 1,
+		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'Work with TeamDynamix tickets and knowledge base articles',
 		usableAsTool: true,
 		defaults: {
 			name: 'TeamDynamix',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
+		inputs: [NodeConnectionTypes.Main],
+		outputs: [NodeConnectionTypes.Main],
 		credentials: [
 			{
 				name: 'teamDynamixApi',
